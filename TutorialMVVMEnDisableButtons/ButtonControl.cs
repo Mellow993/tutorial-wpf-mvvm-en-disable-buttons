@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace TutorialMVVMEnDisableButtons
 {
-    internal class ButtonControl
+    public class ButtonControl
     {
         public enum State
         {
-            start,
-            pause,
-            finish
+            Start,
+            Pause,
+            Finish
         }
         public State CurrentState { get; set; }
     }
