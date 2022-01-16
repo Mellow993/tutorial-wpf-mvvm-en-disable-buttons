@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Windows.Input;
 
 namespace TutorialMVVMEnDisableButtons
@@ -7,48 +8,48 @@ namespace TutorialMVVMEnDisableButtons
     {
         private DelegateCommand _startCommand;
         private DelegateCommand _pauseCommand;
-        private DelegateCommand _finishCommand;
+        private DelegateCommand _endCommand;
+
+        readonly ButtonControl _buttonControl = new ButtonControl();
 
         public ICommand StartCommand { get => _startCommand; }
         public ICommand PauseCommand { get => _pauseCommand; }
-        public ICommand FinishCommand { get => _finishCommand; }
+        public ICommand EndCommand { get => _endCommand; }
 
-        //_startCommand = new DelegateCommand(Start, CanStart);
-        //_pauseCommand = new DelegateCommand(Pause, CanPause);
-        //_finishCommand = new DelegateCommand(Finish, CanFinish);
-
+        public MainWindowViewModel()
+        {
+            _startCommand = new DelegateCommand(Start, CanStart);
+            _pauseCommand = new DelegateCommand(Pause, CanPause);
+            _endCommand = new DelegateCommand(End, CanEnd);
+            _buttonControl.CurrentState = ButtonControl.State.Start;
+        }
 
         private void Start()
         {
-
-        }   
-        
+            _buttonControl.CurrentState = ButtonControl.State.Pause;
+            RaisePropertyChanged();
+        }
+            
+        private bool CanStart() => _buttonControl.CurrentState == ButtonControl.State.Start ? true : false;
         private void Pause()
         {
-
-        }   
-        
-        private void Finish()
-        {
-
+            _buttonControl.CurrentState = ButtonControl.State.Finish;
+            RaisePropertyChanged();
         }
 
-        private bool CanStart()
+        private bool CanPause() => _buttonControl.CurrentState == ButtonControl.State.Pause ? true : false;
+        private void End()
         {
-            return true;
+            System.Windows.Application.Current.Shutdown();
+            RaisePropertyChanged();
         }
+        private bool CanEnd() => _buttonControl.CurrentState == ButtonControl.State.Finish ? true : false;
 
-        private bool CanPause()
+        private void RaisePropertyChanged([CallerMemberName] string propname = "")
         {
-            return true;
+            ((DelegateCommand)StartCommand).OnExecuteChanged();
+            ((DelegateCommand)PauseCommand).OnExecuteChanged();
+            ((DelegateCommand)EndCommand).OnExecuteChanged();
         }
-
-        private bool CanFinish()
-        {
-            return true;
-        }
-
-
-        
     }
 }
