@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TutorialMVVMEnDisableButtons"
         mc:Ignorable="d"
-        Title="Tutorial Disable/Enable Buttons" Height="180" Width="220" ResizeMode="NoResize">
+        Title="Tutorial Disable/Enable Buttons" Height="180" Width="250" ResizeMode="NoResize">
     <Grid>
         <Grid.DataContext>
             <local:MainWindowViewModel/>
